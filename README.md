@@ -49,10 +49,10 @@ Interna undantag hanteras av Travlr och tom array returneras vid eventuella fel.
 
 API:
 ======
-Metod:							Argument						Respons
+Metod:			 | 			Argument: | 						Response: <br />
 
-__construct					(opt) int:cache-ttl
+__construct					(opt) int:cache-ttl <br />
 
-whats_comes_around	string:station			array(arriving_date&time => origin)
+whats_comes_around	string:station			array(arriving_date&time => origin) <br />
 
 whats_goes_around		string:station			array(departuredate&time => destination)
