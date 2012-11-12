@@ -137,7 +137,7 @@ class Travlr implements iTravlr{
 		}
 
 		if($stations_json !== null){
-			apc_store(Travlr::STATIONS, $stations_json, $this->travlr_ttl);
+			apc_store(Travlr::STATIONS, $stations_json, $this->travlr_ttl * 24);
 			$stations = json_decode($stations_json);
 		}else{
 			return $stations;
