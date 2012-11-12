@@ -21,7 +21,7 @@ Vilka andra API:er används/beroenden finns?
 cURL för att hämta data från api.tagtider.net
 PHP APC används för att cacha data för att minska antalet requests.
 
-Hur vill man som utvecklare av en applikation använda detta api? Vad skall man kunna styra? Vilka argument skickar man med? Vad får man som svar?
+Varför och hur använder man detta api?
 ======
 Som användare av Travlr kan man på ett enkelt sätt få ut aktuella information om resor till och från en specifik station.
 Konstruktor tar ett frivilligt INT tal för antal sekunder att cacha svaren, om inget anges kommer det att cachas i 3600 sekunder.
