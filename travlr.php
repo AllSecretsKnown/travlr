@@ -44,7 +44,11 @@ class Travlr implements iTravlr{
 	 * @return array(time => origin)
 	 */
 	public function what_comes_around($station){
-		$arrivals = $this->_process_request($station, Travlr::COMES_AROUND);
+		if(!empty($station)){
+			$arrivals = $this->_process_request($station, Travlr::COMES_AROUND);
+		}else{
+			return array();
+		}
 
 		$return_objects = array();
 
@@ -63,7 +67,11 @@ class Travlr implements iTravlr{
 	 * @return array(time => destination)
 	 */
 	public function what_goes_around($station){
-		$departures = $this->_process_request($station, Travlr::GOES_AROUND);
+		if(!empty($station)){
+			$departures = $this->_process_request($station, Travlr::GOES_AROUND);
+		}else{
+			return array();
+		}
 
 		$return_objects = array();
 
@@ -82,6 +90,7 @@ class Travlr implements iTravlr{
 	 * @return array with objects
 	 */
 	private function _process_request($station, $coming_or_going){
+		$station_prefix = trim(substr(strtolower($station), 0, 4));
 		$id = $this->_get_station_id($station);
 		$object = array();
 		$json_result = false;
@@ -93,26 +102,22 @@ class Travlr implements iTravlr{
 		switch ($coming_or_going) {
 			case Travlr::GOES_AROUND:
 				$query = 'stations/' . $id . '/transfers/departures.json';
-				$json_result = apc_fetch(Travlr::GOES_AROUND);
+				$json_result = apc_fetch(Travlr::GOES_AROUND . $station_prefix);
 				break;
 			case Travlr::COMES_AROUND:
 				$query = 'stations/' . $id . '/transfers/arrivals.json';
-				$json_result = apc_fetch(Travlr::COMES_AROUND);
+				$json_result = apc_fetch(Travlr::COMES_AROUND . $station_prefix);
 				break;
 		}
 		if($json_result == false){
-			try{
-				$json_result = $this->_setup_and_execute_curl($query);
-			}catch(Exception $e){
-				exit('Could not connect to remote API : ' . $e);
-			}
+			$json_result = $this->_setup_and_execute_curl($query);
 		}
 
 		if($json_result != null){
 			if($coming_or_going == Travlr::COMES_AROUND){
-				apc_store(Travlr::COMES_AROUND, $json_result, $this->travlr_ttl);
+				apc_store(Travlr::COMES_AROUND .$station_prefix, $json_result, $this->travlr_ttl);
 			}else{
-				apc_store(Travlr::GOES_AROUND, $json_result, $this->travlr_ttl);
+				apc_store(Travlr::GOES_AROUND .$station_prefix, $json_result, $this->travlr_ttl);
 			}
 			$object = json_decode($json_result);
 		}
@@ -128,11 +133,7 @@ class Travlr implements iTravlr{
 		$stations = array();
 		//Check if we have stations-json in cache
 		if(!$stations_json = apc_fetch(Travlr::STATIONS)){
-			try{
-				$stations_json = $this->_setup_and_execute_curl(Travlr::STATIONS_QUERY);
-			}catch(Exception $e){
-				exit('Could not connect to remote API : ' . $e);
-			}
+			$stations_json = $this->_setup_and_execute_curl(Travlr::STATIONS_QUERY);
 		}
 
 		if($stations_json !== null){
@@ -173,24 +174,25 @@ class Travlr implements iTravlr{
 			$full_url .= $query;
 		}
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->auth);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept' => 'application/json'));
-		curl_setopt($ch, CURLOPT_URL, $full_url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		try{
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+			curl_setopt($ch, CURLOPT_USERPWD, $this->auth);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept' => 'application/json'));
+			curl_setopt($ch, CURLOPT_URL, $full_url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-		$response = curl_exec($ch);
-		curl_getinfo($ch);
-		$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
-
-		if($http_status == "200")
-		{
-			return $response;
+			$response = curl_exec($ch);
+			curl_getinfo($ch);
+			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			curl_close($ch);
+		}catch(Exception $e){
+			exit('Could not connect to remote API : ' . $e);
 		}
-		else
-		{
+
+		if($http_status == "200"){
+			return $response;
+		}else{
 			return null;
 		}
 	}

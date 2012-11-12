@@ -44,7 +44,7 @@ $arrivals = $my_travlr->what_comes_around('Kalmar c');
 Hur sker felhantering?
 ======
 Samtliga publika metoder returnerar tom array om ingen data finns att presentera.
-Interna undantag hanteras av Travlr och tom array returneras.
+Interna undantag hanteras av Travlr och tom array returneras vid eventuella fel.
 
 
 API:
