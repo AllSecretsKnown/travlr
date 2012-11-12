@@ -30,7 +30,7 @@ Se API dokumentation nedan.
 
 Hur får man tillgång till api´et? Hur installerar man det?
 ======
-API:et finns publikt på https://github.com/AllSecretsKnown/travlr
+API:et finns publikt på https://github.com/AllSecretsKnown/travlr ||
 https://github.com/AllSecretsKnown/travlr.git
 
 Användning:
