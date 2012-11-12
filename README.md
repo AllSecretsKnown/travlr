@@ -51,8 +51,8 @@ API:
 ======
 Metod:			 | 			Argument: | 						Response: <br />
 
-__construct					(opt) int:cache-ttl <br />
+__construct				( opt int:cache-ttl )  <br />
 
-whats_comes_around	string:station			array(arriving_date&time => origin) <br />
+whats_comes_around (	string:station	) =>		array(arriving_date&time => origin) <br />
 
-whats_goes_around		string:station			array(departuredate&time => destination)
+whats_goes_around	(	string:station	) =>		array(departuredate&time => destination)
