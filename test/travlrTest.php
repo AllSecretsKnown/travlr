@@ -67,7 +67,7 @@ class TravlrTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->array_contains_dates_and_stations($result));
 
 		//Now we try to get the same result from cache
-		$this->assertTrue(apc_exists((Travlr::COMES_AROUND . $station_prefix)), 'Key not found in APC');
+		/*$this->assertTrue(apc_exists((Travlr::COMES_AROUND . $station_prefix)), 'Key not found in APC');
 		$cache_array = array();
 		$cache_result = apc_fetch(Travlr::COMES_AROUND . $station_prefix);
 		$cache_result = json_decode($cache_result);
@@ -78,7 +78,7 @@ class TravlrTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->array_contains_dates_and_stations($cache_array));
 
 		//Make sure the respons is the same
-		$this->assertEquals($cache_result, $result);
+		$this->assertEquals($cache_result, $result);*/
 	}
 
 	/*
