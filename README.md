@@ -63,20 +63,20 @@ Exempel på svar:
 $arrivals = $my_travlr->what_comes_around('Kalmar c'); <br />
 var_dump($arrivals); <br />
 
-array (size=16)
-  '2012-11-20 10:00:00' => string 'GÃ¶teborg,Alvesta,VÃ¤xjÃ¶' (length=25)
-  '2012-11-20 10:51:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 11:37:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)
-  '2012-11-20 12:58:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 13:35:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)
-  '2012-11-20 14:01:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 14:54:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 15:08:00' => string 'GÃ¶teborg,Alvesta,VÃ¤xjÃ¶' (length=25)
-  '2012-11-20 15:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)
-  '2012-11-20 16:29:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 17:00:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 17:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)
-  '2012-11-20 18:00:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 18:55:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
-  '2012-11-20 19:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)
-  '2012-11-20 20:50:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)
+array (size=16)<br />
+  '2012-11-20 10:00:00' => string 'GÃ¶teborg,Alvesta,VÃ¤xjÃ¶' (length=25)<br />
+  '2012-11-20 10:51:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 11:37:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)<br />
+  '2012-11-20 12:58:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 13:35:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)<br />
+  '2012-11-20 14:01:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 14:54:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 15:08:00' => string 'GÃ¶teborg,Alvesta,VÃ¤xjÃ¶' (length=25)<br />
+  '2012-11-20 15:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)<br />
+  '2012-11-20 16:29:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 17:00:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 17:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)<br />
+  '2012-11-20 18:00:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 18:55:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
+  '2012-11-20 19:34:00' => string 'LinkÃ¶ping,Vimmerby,Hultsfred' (length=29)<br />
+  '2012-11-20 20:50:00' => string 'KÃ¶penhamn,MalmÃ¶' (length=17)<br />
