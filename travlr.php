@@ -53,6 +53,9 @@ class Travlr implements iTravlr{
 		$return_objects = array();
 
 		if(count($arrivals) > 0){
+			if(is_array($arrivals) && isset($arrivals['Error'])){
+				return $arrivals;
+			}
 			foreach ( $arrivals->transfer as $incoming ) {
 				$return_objects[$incoming->arrival] = $incoming->origin;
 			}
@@ -76,6 +79,9 @@ class Travlr implements iTravlr{
 		$return_objects = array();
 
 		if(count($departures) > 0){
+			if(is_array($departures) && isset($departures['Error'])){
+				return $departures;
+			}
 			foreach ( $departures->transfer as $outgoing ) {
 				$return_objects[$outgoing->departure] = $outgoing->destination;
 			}
@@ -120,6 +126,8 @@ class Travlr implements iTravlr{
 				apc_store(Travlr::GOES_AROUND .$station_prefix, $json_result, $this->travlr_ttl);
 			}
 			$object = json_decode($json_result);
+		}elseif($json_result === null){
+			return array('Error' => 'Could not connect to remote API');
 		}
 		return $object->station->transfers;
 	}
