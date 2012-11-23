@@ -96,6 +96,12 @@ class Travlr implements iTravlr{
 	 * @return array with objects
 	 */
 	private function _process_request($station, $coming_or_going){
+		//Make sure were doing a valid search, help the user a bit
+		$last_chars = substr($station, count($station)-3, 2);
+		if(strtolower($last_chars) !== ' c'){
+			$station .= ' C';
+		}
+
 		$station_prefix = trim(substr(strtolower($station), 0, 4));
 		$id = $this->_get_station_id($station);
 		$object = array();
