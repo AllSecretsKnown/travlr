@@ -28,8 +28,6 @@ API:et finns publikt på:
 
 >https://github.com/AllSecretsKnown/travlr
 
->https://github.com/AllSecretsKnown/travlr.git
-
 ##Hur använder man detta API?
 
 Ladda ner filerna eller klona repositoriet.
@@ -39,8 +37,11 @@ Instansiera ett objekt av travl (konstruktor tar ett frivilligt INT tal för ant
 Två metoder ingår i det publika API:et.
 
 >__construct				( opt int:cache-ttl )
+
 >whats_comes_around (	string:station	) =>		array( arriving_date&time => string:origin )
+
 >whats_goes_around	(	string:station	) =>		array( departuredate&time => string:destination )
+
 
 	require_once('travlr.php');
 
