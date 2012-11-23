@@ -48,7 +48,7 @@ Två metoder ingår i det publika API:et.
 
 	require_once('travlr.php');
 
-	$my_travlr = new Travlr(); //Alt. new Travlr(5000); Där tiden att chacha svaret anges i sekunder, om inget anges cachas det i 3600 sekunder.
+	$my_travlr = new Travlr(); //Alt. new Travlr(5000);
 
 	$departures = $my_travlr->what_goes_around('Kalmar c');
 
