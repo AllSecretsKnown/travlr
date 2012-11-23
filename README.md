@@ -2,10 +2,13 @@ travlr
 ======
 ##Användningsområde:
 
-Ett PHP API som kapslar in och ger möjligheten att hämta reseinformation (tågtider) från Trafikverket via api.tagtider.net. <br />
-Enkelt och smidigt sätt att få tillgång till alla aktuella avgångar och ankomster på valfri station. <br />
+Ett PHP API som kapslar in och ger möjligheten att hämta reseinformation (tågtider) från Trafikverket via api.tagtider.net.
+
+Enkelt och smidigt sätt att få tillgång till alla aktuella avgångar och ankomster på valfri station.
+
 Information hämtas via http://tagtider.net/ som i sin tur hämtar från Trafikverket.
-Antalet tillgängliga stationer begränsas av vad som finns tillgängligt via api.tagtider.net, tillgängliga stationer finns dokumenterade här: <br />
+
+Antalet tillgängliga stationer begränsas av vad som finns tillgängligt via api.tagtider.net, tillgängliga stationer ökar i takt med vidareutveckling av api.tagtider.net <br />
 
 
 ##Vilken funktionalitet finns?
