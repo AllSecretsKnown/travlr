@@ -57,11 +57,11 @@ Två metoder ingår i det publika API:et.
 
 	var_dump($arrivals);
 
-	array (size=16)<br />
+	array (size=16)
 		'2012-11-20 10:00:00' => string 'Göteborg,Alvesta,Växjö' (length=25)
 		'2012-11-20 10:51:00' => string 'Köpenhamn,Malmö¶' (length=17)
-		'2012-11-20 11:37:00' => string 'Linköping,Vimmerby,Hultsfred' (length=29)<
-		'2012-11-20 12:58:00' => string 'Köpenhamn,Malmö' (length=17)<br />
+		'2012-11-20 11:37:00' => string 'Linköping,Vimmerby,Hultsfred' (length=29)
+		'2012-11-20 12:58:00' => string 'Köpenhamn,Malmö' (length=17)
 		'2012-11-20 13:35:00' => string 'Linköping,Vimmerby,Hultsfred' (length=29)
 		'2012-11-20 14:01:00' => string 'Köpenhamn,Malmö' (length=17)
 		'2012-11-20 14:54:00' => string 'Köpenhamn,Malmö' (length=17)
