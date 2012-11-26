@@ -31,6 +31,30 @@ API:et finns publikt på:
 
 >https://github.com/AllSecretsKnown/travlr
 
+##Hur ser interfacet ut?
+
+	interface iTravlr{
+
+		/*
+		 * Function to get all Arriving trains to statin X
+		 * @scope public
+		 * @param string - Station name
+		 * @return - Asoc-Array, key -> value, (Date/Time -> origin station)
+		 * @error - Asoc-Array, Key -> Value, (Error -> Message)
+		 */
+		public function what_comes_around($station);
+
+		/*
+		 * Function to get all departing trains from station X
+		 * @scope public
+		 * @param string - station name
+		 * @return - Asoc-Array, key -> value, (Date/Time -> Destination)
+		 * @error - Asoc-Array, Key -> Value, (Error -> Message)
+		 */
+		public function what_goes_around($station);
+
+	}
+
 ##Hur använder man detta API?
 
 Ladda ner filerna eller klona repositoriet.
