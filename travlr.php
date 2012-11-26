@@ -23,6 +23,9 @@ class Travlr implements iTravlr{
 	//Time to cache response from api.tagtider.net
 	private $travlr_ttl;
 
+	//Error array
+	private $error_array;
+
 	function __construct($ttl = ''){
 		if(isset($ttl) && $ttl !== ''){
 			$int_val = intval($ttl);
@@ -36,10 +39,11 @@ class Travlr implements iTravlr{
 		}
 
 		$this->stations = $this->_get_stations();
+		$this->error_array = array();
 	}
 
 	/*
-	 * Public static function to get Info about all incoming traffic
+	 * Public function to get Info about all incoming traffic
 	 * @param string - Station name
 	 * @return array(time => origin)
 	 */
@@ -47,7 +51,7 @@ class Travlr implements iTravlr{
 		if(!empty($station)){
 			$arrivals = $this->_process_request($station, Travlr::COMES_AROUND);
 		}else{
-			return array();
+			return $this->return_error_message('Not a valid station');
 		}
 
 		$return_objects = array();
@@ -65,7 +69,7 @@ class Travlr implements iTravlr{
 	}
 
 	/*
-	 * Public static function to get info about all outgoing traffic
+	 * Public function to get info about all outgoing traffic
 	 * @param string - Station name
 	 * @return array(time => destination)
 	 */
@@ -73,7 +77,7 @@ class Travlr implements iTravlr{
 		if(!empty($station)){
 			$departures = $this->_process_request($station, Travlr::GOES_AROUND);
 		}else{
-			return array();
+			return $this->return_error_message('Not a valid station');
 		}
 
 		$return_objects = array();
@@ -88,6 +92,16 @@ class Travlr implements iTravlr{
 		}
 
 		return $return_objects;
+	}
+
+	/*
+	 * Private function to return error array
+	 * @param -
+	 * @return Array - error => message
+	 */
+	private function return_error_message($message){
+		$this->error_array['error'] = $message;
+		return $this->error_array;
 	}
 
 	/*
@@ -133,7 +147,7 @@ class Travlr implements iTravlr{
 			}
 			$object = json_decode($json_result);
 		}elseif($json_result === null){
-			return array('Error' => 'Could not connect to remote API');
+			return $this->return_error_message('Could not connect to remote API');
 		}
 		return $object->station->transfers;
 	}
