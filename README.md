@@ -119,6 +119,8 @@ Samtliga publika metoder returnerar tom array om ingen data finns att presentera
 Interna undantag hanteras av Travlr och array returneras vid eventuella fel. (Tom array om infomation saknas, och array med felmeddelande om anslutningen inte kunde etableras)<br />
 Om Tågtider APIet inte svara returneras:
 
+```php
+
 	array( 'Error' => 'Could not connect to remote API' );
 
-
+```
