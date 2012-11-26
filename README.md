@@ -57,6 +57,8 @@ API:et finns publikt på:
 
 	}
 
+```
+
 ##Hur använder man detta API?
 
 Ladda ner filerna eller klona repositoriet.
@@ -80,6 +82,8 @@ Två metoder ingår i det publika API:et.
 	$departures = $my_travlr->what_goes_around('Kalmar c');
 
 	$arrivals = $my_travlr->what_comes_around('Kalmar c');
+
+```
 
 ##Exempel på svar:
 ```php
@@ -105,6 +109,8 @@ Två metoder ingår i det publika API:et.
 		'2012-11-20 18:55:00' => string 'Köpenhamn,Malmö' (length=17)
 		'2012-11-20 19:34:00' => string 'Linköping,Vimmerby,Hultsfred' (length=29)
 		'2012-11-20 20:50:00' => string 'Köpenhamn,Malmö' (length=17)
+
+```
 
 ##Hur sker felhantering?
 
