@@ -122,5 +122,4 @@ Om Tågtider APIet inte svara returneras:
 ```php
 
 	array( 'Error' => 'Could not connect to remote API' );
-
 ```
