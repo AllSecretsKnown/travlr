@@ -33,6 +33,8 @@ API:et finns publikt på:
 
 ##Hur ser interfacet ut?
 
+```php
+
 	interface iTravlr{
 
 		/*
@@ -69,6 +71,7 @@ Två metoder ingår i det publika API:et.
 
 >whats_goes_around	(	string:station	) =>		array( departuredate&time => string:destination )
 
+```php
 
 	require_once('travlr.php');
 
@@ -79,6 +82,7 @@ Två metoder ingår i det publika API:et.
 	$arrivals = $my_travlr->what_comes_around('Kalmar c');
 
 ##Exempel på svar:
+```php
 
 	$arrivals = $my_travlr->what_comes_around('Kalmar c');
 
