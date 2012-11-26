@@ -63,6 +63,8 @@ class Travlr implements iTravlr{
 			foreach ( $arrivals->transfer as $incoming ) {
 				$return_objects[$incoming->arrival] = $incoming->origin;
 			}
+		}elseif($arrivals === null){
+			return $this->return_error_message('Cant find station');
 		}
 
 		return $return_objects;
@@ -89,6 +91,8 @@ class Travlr implements iTravlr{
 			foreach ( $departures->transfer as $outgoing ) {
 				$return_objects[$outgoing->departure] = $outgoing->destination;
 			}
+		}elseif($departures === null){
+			return $this->return_error_message('Cant find station');
 		}
 
 		return $return_objects;
@@ -118,12 +122,12 @@ class Travlr implements iTravlr{
 
 		$station_prefix = trim(substr(strtolower($station), 0, 4));
 		$id = $this->_get_station_id($station);
-		$object = array();
-		$json_result = false;
-
 		if($id == false){
 			return null;
 		}
+
+		$object = array();
+		$json_result = false;
 
 		switch ($coming_or_going) {
 			case Travlr::GOES_AROUND:
