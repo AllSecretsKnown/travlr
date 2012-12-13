@@ -41,7 +41,7 @@ API:et finns publikt på:
     	 * Function to get all Arriving trains to statin X
     	 * @scope public
     	 * @param string - Station name
-    	 * @return - TrvaleWrapper object, Traversable
+    	 * @return - TravelWrapper object, Traversable
     	 */
     	public function what_comes_around($station);
 
@@ -49,7 +49,7 @@ API:et finns publikt på:
     	 * Function to get all departing trains from station X
     	 * @scope public
     	 * @param string - station name
-    	 * @return - TrvaleWrapper object, Traversable
+    	 * @return - TravelWrapper object, Traversable
     	 */
     	public function what_goes_around($station);
 
@@ -102,22 +102,22 @@ Två metoder ingår i det publika API:et.
 
 	//Output
 		2012-12-13 12:55:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 13:35:00 Kalmar c -> Linköping,Rimforsa,Kisa
-    2012-12-13 14:02:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 14:56:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 15:08:00 Kalmar c -> GÃ¶teborg,BorÃ¥s,VÃ¤xjÃ¶
-    2012-12-13 15:34:00 Kalmar c -> Linköping,Rimforsa,Kisa
-    2012-12-13 16:30:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 17:05:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 17:34:00 Kalmar c -> Linköping,Tannefors,Rimforsa
-    2012-12-13 18:00:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 19:00:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 19:34:00 Kalmar c -> Linköping,Tannefors,Rimforsa
-    2012-12-13 20:10:00 Kalmar c -> Göteborg,Borås,Växjö
-    2012-12-13 21:00:00 Kalmar c -> Köpenhamn,Malmö
-    2012-12-13 21:28:00 Kalmar c -> Linköping,Tannefors,Rimforsa
-    2012-12-13 22:05:00 Kalmar c -> Göteborg,Borås,Växjö
-    2012-12-13 22:55:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 13:35:00 Kalmar c -> Linköping,Rimforsa,Kisa
+		2012-12-13 14:02:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 14:56:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 15:08:00 Kalmar c -> GÃ¶teborg,BorÃ¥s,VÃ¤xjÃ¶
+		2012-12-13 15:34:00 Kalmar c -> Linköping,Rimforsa,Kisa
+		2012-12-13 16:30:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 17:05:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 17:34:00 Kalmar c -> Linköping,Tannefors,Rimforsa
+		2012-12-13 18:00:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 19:00:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 19:34:00 Kalmar c -> Linköping,Tannefors,Rimforsa
+		2012-12-13 20:10:00 Kalmar c -> Göteborg,Borås,Växjö
+		2012-12-13 21:00:00 Kalmar c -> Köpenhamn,Malmö
+		2012-12-13 21:28:00 Kalmar c -> Linköping,Tannefors,Rimforsa
+		2012-12-13 22:05:00 Kalmar c -> Göteborg,Borås,Växjö
+		2012-12-13 22:55:00 Kalmar c -> Köpenhamn,Malmö
 
 ```
 
@@ -149,9 +149,7 @@ Samtliga publika metoder returnerar ett Wrapper object med en error property ret
         empty
     private 'error' => string 'Cant find station' (length=17)
 
-    public function get_travels() {}
-
-		public function get_error_message() {}
+	public function get_error_message() {}
 
 ```
 
