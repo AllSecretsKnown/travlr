@@ -1,14 +1,16 @@
 <?php
 
-require_once('interface/itravlr.php');
+require_once( 'interface/itravlr.php' );
+require_once( 'objects/travel.php' );
+require_once( 'objects/travel_wrapper.php' );
 
-class Travlr implements iTravlr{
+class Travlr implements iTravlr {
 
 
 	//Prefixes used in APC cache
-	CONST GOES_AROUND = 'GOES_AROUND';
+	CONST GOES_AROUND  = 'GOES_AROUND';
 	CONST COMES_AROUND = 'COMES_AROUND';
-	CONST STATIONS = 'STATIONS';
+	CONST STATIONS     = 'STATIONS';
 
 	//Querys for stations, arrivals and departures
 	CONST STATIONS_QUERY = 'stations.json';
@@ -26,86 +28,89 @@ class Travlr implements iTravlr{
 	//Error array
 	private $error_array;
 
-	function __construct($ttl = ''){
-		if(isset($ttl) && $ttl !== ''){
-			$int_val = intval($ttl);
-			if($int_val > 0){
+	//Private wrapper
+	private $wrapper;
+
+	function __construct( $ttl = '' ) {
+		if ( isset( $ttl ) && $ttl !== '' ) {
+			$int_val = intval( $ttl );
+			if ( $int_val > 0 ) {
 				$this->travlr_ttl = $int_val;
 			}
 
-		}
-		else{
+		} else {
 			$this->travlr_ttl = 60 * 60;
 		}
 
-		$this->stations = $this->_get_stations();
+		$this->stations    = $this->_get_stations();
 		$this->error_array = array();
+		$this->wrapper     = new TravelWrapper();
 	}
 
 	/*
 	 * Public function to get Info about all incoming traffic
 	 * @param string - Station name
-	 * @return array(time => origin)
+	 * @return Travel Wrapper object
 	 */
-	public function what_comes_around($station){
-		if(!empty($station)){
-			$arrivals = $this->_process_request($station, Travlr::COMES_AROUND);
-		}else{
-			return $this->return_error_message('Not a valid station');
+	public function what_comes_around( $station ) {
+		if ( ! empty( $station ) ) {
+			$arrivals = $this->_process_request( $station, Travlr::COMES_AROUND );
+		} else {
+			return $this->return_error_message( 'Not a valid station' );
 		}
 
-		$return_objects = array();
+		if ( count( $arrivals ) > 0 ) {
 
-		if(count($arrivals) > 0){
-			if(is_array($arrivals) && isset($arrivals['Error'])){
-				return $arrivals;
+			if ( is_object( $arrivals ) && is_a( $arrivals, 'TravelWrapper' ) ) {
+				return $this->wrapper;
 			}
+
 			foreach ( $arrivals->transfer as $incoming ) {
-				$return_objects[$incoming->arrival] = $incoming->origin;
+				$travel = new Travel( $incoming->arrival, $station, $incoming->origin );
+				$this->wrapper->add_travels( $travel );
 			}
-		}elseif($arrivals === null){
-			return $this->return_error_message('Cant find station');
+		} elseif ( $arrivals === null ) {
+			return $this->return_error_message( 'Cant find station' );
 		}
 
-		return $return_objects;
+		return $this->wrapper;
 	}
 
 	/*
 	 * Public function to get info about all outgoing traffic
 	 * @param string - Station name
-	 * @return array(time => destination)
+	 * @return Travel Wrapper object
 	 */
-	public function what_goes_around($station){
-		if(!empty($station)){
-			$departures = $this->_process_request($station, Travlr::GOES_AROUND);
-		}else{
-			return $this->return_error_message('Not a valid station');
+	public function what_goes_around( $station ) {
+		if ( ! empty( $station ) ) {
+			$departures = $this->_process_request( $station, Travlr::GOES_AROUND );
+		} else {
+			return $this->return_error_message( 'Not a valid station' );
 		}
 
-		$return_objects = array();
-
-		if(count($departures) > 0){
-			if(is_array($departures) && isset($departures['Error'])){
-				return $departures;
+		if ( count( $departures ) > 0 ) {
+			if ( is_object( $departures ) && is_a( $departures, 'TravelWrapper' ) ) {
+				return $this->wrapper;
 			}
 			foreach ( $departures->transfer as $outgoing ) {
-				$return_objects[$outgoing->departure] = $outgoing->destination;
+				$travel = new Travel( $outgoing->departure, $outgoing->destination, $station );
+				$this->wrapper->add_travels( $travel );
 			}
-		}elseif($departures === null){
-			return $this->return_error_message('Cant find station');
+		} elseif ( $departures === null ) {
+			return $this->return_error_message( 'Cant find station' );
 		}
 
-		return $return_objects;
+		return $this->wrapper;
 	}
 
 	/*
 	 * Private function to return error array
 	 * @param -
-	 * @return Array - error => message
+	 * @return Travel Wrapper object
 	 */
-	private function return_error_message($message){
-		$this->error_array['error'] = $message;
-		return $this->error_array;
+	private function return_error_message( $message ) {
+		$this->wrapper->set_error( $message );
+		return $this->wrapper;
 	}
 
 	/*
@@ -113,45 +118,45 @@ class Travlr implements iTravlr{
 	 * @params string Station, string Constant defined in class, describing if we are coming or going
 	 * @return array with objects
 	 */
-	private function _process_request($station, $coming_or_going){
+	private function _process_request( $station, $coming_or_going ) {
 		//Make sure were doing a valid search, help the user a bit
-		$last_chars = substr($station, count($station)-3, 2);
-		if(strtolower($last_chars) !== ' c'){
+		$last_chars = substr( $station, count( $station ) - 3, 2 );
+		if ( strtolower( $last_chars ) !== ' c' ) {
 			$station .= ' C';
 		}
 
-		$station_prefix = trim(substr(strtolower($station), 0, 4));
-		$id = $this->_get_station_id($station);
-		if($id == false){
+		$station_prefix = trim( substr( strtolower( $station ), 0, 4 ) );
+		$id             = $this->_get_station_id( $station );
+		if ( $id == false ) {
 			return null;
 		}
 
-		$object = array();
+		$object      = array();
 		$json_result = false;
 
-		switch ($coming_or_going) {
+		switch ( $coming_or_going ) {
 			case Travlr::GOES_AROUND:
-				$query = 'stations/' . $id . '/transfers/departures.json';
-				$json_result = apc_fetch(Travlr::GOES_AROUND . $station_prefix);
+				$query       = 'stations/' . $id . '/transfers/departures.json';
+				$json_result = apc_fetch( Travlr::GOES_AROUND . $station_prefix );
 				break;
 			case Travlr::COMES_AROUND:
-				$query = 'stations/' . $id . '/transfers/arrivals.json';
-				$json_result = apc_fetch(Travlr::COMES_AROUND . $station_prefix);
+				$query       = 'stations/' . $id . '/transfers/arrivals.json';
+				$json_result = apc_fetch( Travlr::COMES_AROUND . $station_prefix );
 				break;
 		}
-		if($json_result == false){
-			$json_result = $this->_setup_and_execute_curl($query);
+		if ( $json_result == false ) {
+			$json_result = $this->_setup_and_execute_curl( $query );
 		}
 
-		if($json_result != null){
-			if($coming_or_going == Travlr::COMES_AROUND){
-				apc_store(Travlr::COMES_AROUND .$station_prefix, $json_result, $this->travlr_ttl);
-			}else{
-				apc_store(Travlr::GOES_AROUND .$station_prefix, $json_result, $this->travlr_ttl);
+		if ( $json_result !== null && $json_result !== '' ) {
+			if ( $coming_or_going == Travlr::COMES_AROUND ) {
+				apc_store( Travlr::COMES_AROUND . $station_prefix, $json_result, $this->travlr_ttl );
+			} else {
+				apc_store( Travlr::GOES_AROUND . $station_prefix, $json_result, $this->travlr_ttl );
 			}
-			$object = json_decode($json_result);
-		}elseif($json_result === null){
-			return $this->return_error_message('Could not connect to remote API');
+			$object = json_decode( $json_result );
+		} elseif ( $json_result === null OR $json_result === '' ) {
+			return $this->return_error_message( 'Could not connect to remote API' );
 		}
 		return $object->station->transfers;
 	}
@@ -161,17 +166,17 @@ class Travlr implements iTravlr{
 	 * @param -
 	 * @return stdClass with id
 	 */
-	private function _get_stations(){
+	private function _get_stations() {
 		$stations = array();
 		//Check if we have stations-json in cache
-		if(!$stations_json = apc_fetch(Travlr::STATIONS)){
-			$stations_json = $this->_setup_and_execute_curl(Travlr::STATIONS_QUERY);
+		if ( ! $stations_json = apc_fetch( Travlr::STATIONS ) ) {
+			$stations_json = $this->_setup_and_execute_curl( Travlr::STATIONS_QUERY );
 		}
 
-		if($stations_json !== null){
-			apc_store(Travlr::STATIONS, $stations_json, $this->travlr_ttl * 24);
-			$stations = json_decode($stations_json);
-		}else{
+		if ( $stations_json !== null ) {
+			apc_store( Travlr::STATIONS, $stations_json, $this->travlr_ttl * 24 );
+			$stations = json_decode( $stations_json );
+		} else {
 			return $stations;
 		}
 		return $stations->stations->station;
@@ -182,9 +187,9 @@ class Travlr implements iTravlr{
 	 * @param string - station name
 	 * @return station ID
 	 */
-	private function _get_station_id($station){
+	private function _get_station_id( $station ) {
 		foreach ( $this->stations as $known_station ) {
-			if(strtolower($known_station->name) == strtolower($station)){
+			if ( strtolower( $known_station->name ) == strtolower( $station ) ) {
 				return $known_station->id;
 			}
 		}
@@ -196,35 +201,35 @@ class Travlr implements iTravlr{
 	 * @param string query
 	 * @return response json/xml
 	 */
-	private function _setup_and_execute_curl($query){
+	private function _setup_and_execute_curl( $query ) {
 
 		$full_url = $this->api_url;
 
-		if(!isset($query)){
+		if ( ! isset( $query ) ) {
 			return null;
-		}else{
+		} else {
 			$full_url .= $query;
 		}
 
-		try{
+		try {
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-			curl_setopt($ch, CURLOPT_USERPWD, $this->auth);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept' => 'application/json'));
-			curl_setopt($ch, CURLOPT_URL, $full_url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt( $ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY );
+			curl_setopt( $ch, CURLOPT_USERPWD, $this->auth );
+			curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Accept' => 'application/json' ) );
+			curl_setopt( $ch, CURLOPT_URL, $full_url );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
 
-			$response = curl_exec($ch);
-			curl_getinfo($ch);
-			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			curl_close($ch);
-		}catch(Exception $e){
-			exit('Could not connect to remote API : ' . $e);
+			$response = curl_exec( $ch );
+			curl_getinfo( $ch );
+			$http_status = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+			curl_close( $ch );
+		} catch ( Exception $e ) {
+			exit( 'Could not connect to remote API : ' . $e );
 		}
 
-		if($http_status == "200"){
+		if ( $http_status == "200" ) {
 			return $response;
-		}else{
+		} else {
 			return null;
 		}
 	}

@@ -1,14 +1,14 @@
 <?php
 //Require travlr.php
-require_once('travlr.php');
+require_once( 'travlr.php' );
 
 //Instantiate
 $my_travlr = new Travlr();
 
 //Make a call
-//$departures = $my_travlr->what_goes_around('Kalmar c');
-$arrivals = $my_travlr->what_comes_around('Kalmar c');
+$travels = $my_travlr->what_comes_around( 'Kalmar' );
 
 //Work with the result
-//var_dump($departures);
-var_dump($arrivals);
+foreach ( $travels as $travel ) {
+	echo $travel->get_date_and_time() . ' ' . $travel->get_destination() . ' -> ' . $travel->get_origin() . '<br>';
+}
