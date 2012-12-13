@@ -93,10 +93,10 @@ Två metoder ingår i det publika API:et.
   $my_travlr = new Travlr();
 
   //Make a call
-  $travels_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
+  $travel_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
 
   //Work with the result, Implements Iterator interface, is traversable
-  foreach ( $travels_wrapper as $travel ) {
+  foreach ( $travel_wrapper as $travel ) {
   	echo $travel->get_date_and_time() . ' ' . $travel->get_destination() . ' -> ' . $travel->get_origin() . '<br>';
   }
 
@@ -134,9 +134,9 @@ Samtliga publika metoder returnerar ett Wrapper object med en error property ret
   $my_travlr = new Travlr();
 
   //Make a call
-  $travels_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
+  $travel_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
 
-  echo $travels_wrapper->get_error_message();
+  echo $travel_wrapper->get_error_message();
 
   //Result
   Cant find station
