@@ -71,17 +71,6 @@ Två metoder ingår i det publika API:et.
 
 >whats_goes_around	(	string:station	) =>		TravelWrapper Object, Implemeterar Iterator interface, är traversable
 
-```php
-
-	require_once('travlr.php');
-
-	$my_travlr = new Travlr(); //Alt. new Travlr(5000);
-
-	$departures = $my_travlr->what_goes_around('Kalmar c');
-
-	$arrivals = $my_travlr->what_comes_around('Kalmar c');
-
-```
 
 ##Exempel på användning:
 ```php
