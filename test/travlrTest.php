@@ -3,68 +3,72 @@
 require_once "PHPUnit/Autoload.php";
 require_once "../travlr.php";
 
-class TravlrTest extends PHPUnit_Framework_TestCase
-{
+class TravlrTest extends PHPUnit_Framework_TestCase {
 	private $travlr;
 
-	function setup(){
+	function setup() {
 		$this->travlr = new Travlr();
 	}
 
 	protected function tearDown() {
-		unset($this->travlr);
+		unset( $this->travlr );
 	}
 
 	/*
 	 * Function to make sure we get an empty array when calling what_comes_around with a none existing station
 	 */
-	function testWhatComesAraoundWithNotExistingStation(){
-		$result = $this->travlr->what_comes_around('One Horse Town');
-		$this->assertTrue(is_array($result));
-		$this->assertEmpty($result);
+	function testGetDepartingTrainsNotExistingStation() {
+		$result = $this->travlr->get_departing_trains( 'Not a real city' );
+		$this->assertTrue( is_object( $result ) );
+		$this->assertEquals( $result->get_error_message(), 'Cant find station' );
 	}
 
 	/*
 	 * Function to make sure we get an associative array with date - station when calling what_comes_around with existing station
 	 */
-	function testWhatComesAroundWithOkStation(){
-		$result = $this->travlr->what_comes_around('Kalmar C');
-		$this->assertTrue(is_array($result));
-		$this->assertTrue($this->array_contains_dates_and_stations($result));
+	function testGetDepartingTrainsOkStation() {
+		$result = $this->travlr->get_departing_trains( 'Kalmar C' );
+		$this->assertTrue( is_object( $result ) );
+		foreach ( $result as $travel ) {
+			$this->assertTrue( $this->array_contains_dates_and_stations( $travel->get_date_and_time(), $travel->get_destination() ) );
+		}
 	}
 
 	/*
 	 * Function to make sure we get an empty array when calling what_goes_around with a none existing station
 	 */
-	function testWhatGoesAraoundWithNotExistingStation(){
-		$result = $this->travlr->what_goes_around('One Horse Town');
-		$this->assertTrue(is_array($result));
-		$this->assertEmpty($result);
+	function testGetArrivingTrainsWithNotExistingStation() {
+		$result = $this->travlr->get_arriving_trains( 'Not a real city' );
+		$this->assertTrue( is_object( $result ) );
+		$this->assertEquals( $result->get_error_message(), 'Cant find station' );
 	}
 
 	/*
 	 * Function to make sure we get an associative array with date - station when calling what_goes_around with existing station
 	 */
-	function testWhatGoesAroundWithOkStation(){
-		$result = $this->travlr->what_goes_around('Kalmar C');
-		$this->assertTrue(is_array($result));
-		$this->assertTrue($this->array_contains_dates_and_stations($result));
+	function testGetArrivingTrainsWithOkStation() {
+		$result = $this->travlr->get_arriving_trains( 'Kalmar C' );
+		$this->assertTrue( is_object( $result ) );
+		foreach ( $result as $travel ) {
+			$this->assertTrue( $this->array_contains_dates_and_stations( $travel->get_date_and_time(), $travel->get_destination() ) );
+		}
 	}
 
 	/*
 	 * Function to make sure the APC is caching our stuff
 	 */
-	function testApcCache(){
+	function testApcCache() {
 		$station = 'Kalmar c';
 		//Clear cache on station
-		$station_prefix = trim(substr(strtolower($station), 0, 4));
-		apc_delete(Travlr::COMES_AROUND . $station_prefix);
+		$station_prefix = trim( substr( strtolower( $station ), 0, 4 ) );
+		apc_delete( Travlr::COMES_AROUND . $station_prefix );
 
 		//First we test that we can get the result even though cache has been cleared
-		$result = $this->travlr->what_comes_around('Kalmar c');
-		$this->assertTrue(is_array($result));
-		$this->assertTrue(count($result) > 0);
-		$this->assertTrue($this->array_contains_dates_and_stations($result));
+		$result = $this->travlr->get_arriving_trains( 'Kalmar c' );
+		$this->assertTrue( is_object( $result ) );
+		foreach ( $result as $travel ) {
+			$this->assertTrue( $this->array_contains_dates_and_stations( $travel->get_date_and_time(), $travel->get_destination() ) );
+		}
 
 		//Now we try to get the same result from cache
 		/*$this->assertTrue(apc_exists((Travlr::COMES_AROUND . $station_prefix)), 'Key not found in APC');
@@ -84,15 +88,13 @@ class TravlrTest extends PHPUnit_Framework_TestCase
 	/*
 	 * Private helper to check response array
 	 */
-	private function array_contains_dates_and_stations($result){
-		if(count($result) > 0){
-			foreach ( $result as $key => $val ) {
-				if(!date_parse($key) && !is_string($val)){
-					return false;
-				}
-			}
-			return true;
+	private function array_contains_dates_and_stations( $date, $station ) {
+
+		if ( ! date_parse( $date ) && ! is_string( $station ) ) {
+			return false;
 		}
-		return false;
+
+		return true;
+
 	}
 }

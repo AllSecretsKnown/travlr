@@ -6,7 +6,7 @@ require_once( 'travlr.php' );
 $my_travlr = new Travlr();
 
 //Make a call
-$travels = $my_travlr->what_comes_around( 'Kalmar' );
+$travels = $my_travlr->get_arriving_trains( 'Kalmar' );
 
 //Work with the result
 foreach ( $travels as $travel ) {

@@ -52,7 +52,7 @@ class Travlr implements iTravlr {
 	 * @param string - Station name
 	 * @return Travel Wrapper object
 	 */
-	public function what_comes_around( $station ) {
+	public function get_arriving_trains( $station ) {
 		if ( ! empty( $station ) ) {
 			$arrivals = $this->_process_request( $station, Travlr::COMES_AROUND );
 		} else {
@@ -81,7 +81,7 @@ class Travlr implements iTravlr {
 	 * @param string - Station name
 	 * @return Travel Wrapper object
 	 */
-	public function what_goes_around( $station ) {
+	public function get_departing_trains( $station ) {
 		if ( ! empty( $station ) ) {
 			$departures = $this->_process_request( $station, Travlr::GOES_AROUND );
 		} else {

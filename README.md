@@ -1,4 +1,4 @@
-travlr v1.2
+travlr v1.3
 ======
 ##Användningsområde:
 
@@ -37,21 +37,21 @@ API:et finns publikt på:
 
 	interface iTravlr{
 
-		/*
-    	 * Function to get all Arriving trains to statin X
-    	 * @scope public
-    	 * @param string - Station name
-    	 * @return - TravelWrapper object, Traversable
-    	 */
-    	public function what_comes_around($station);
+    	 /*
+       	 * Function to get all Arriving trains to statin X
+       	 * @scope public
+       	 * @param string - Station name
+       	 * @return - TrvaleWrapper object, Traversable
+       	 */
+       	public function get_arriving_trains($station);
 
-    	/*
-    	 * Function to get all departing trains from station X
-    	 * @scope public
-    	 * @param string - station name
-    	 * @return - TravelWrapper object, Traversable
-    	 */
-    	public function what_goes_around($station);
+       	/*
+       	 * Function to get all departing trains from station X
+       	 * @scope public
+       	 * @param string - station name
+       	 * @return - TrvaleWrapper object, Traversable
+       	 */
+       	public function get_departing_trains($station);
 
 	}
 
@@ -67,9 +67,23 @@ Två metoder ingår i det publika API:et.
 
 >__construct				( opt int:cache-ttl )
 
->whats_comes_around (	string:station	) =>		TravelWrapper Object, Implemeterar Iterator interface, är traversable
+>get_arriving_trains (	string:station	) =>		TravelWrapper Object, Implemeterar Iterator interface, är traversable
 
->whats_goes_around	(	string:station	) =>		TravelWrapper Object, Implemeterar Iterator interface, är traversable
+>get_departing_trains	(	string:station	) =>		TravelWrapper Object, Implemeterar Iterator interface, är traversable
+
+##Travel objektet
+
+TravelWrapper objektet som returneras innehåller en samling med Travel objekt, Wrapperns Travel samlingen kan itereras och varje Travel objekt har följande API/Interface
+
+```php
+
+	public function get_date_and_time() {}
+
+  public function get_destination() {}
+
+  public function get_origin() {}
+
+```
 
 
 ##Exempel på användning:
@@ -82,10 +96,10 @@ Två metoder ingår i det publika API:et.
   $my_travlr = new Travlr();
 
   //Make a call
-  $travel_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
+  $travels = $my_travlr->get_arriving_trains( 'Kalmar' );
 
-  //Work with the result, Implements Iterator interface, is traversable
-  foreach ( $travel_wrapper as $travel ) {
+  //Work with the result
+  foreach ( $travels as $travel ) {
   	echo $travel->get_date_and_time() . ' ' . $travel->get_destination() . ' -> ' . $travel->get_origin() . '<br>';
   }
 
@@ -117,13 +131,13 @@ Samtliga publika metoder returnerar ett Wrapper object med en error property ret
 ```php
 
 	//Require travlr.php
-  require_once( 'travlr.php' );
+	require_once( 'travlr.php' );
 
-  //Instantiate
-  $my_travlr = new Travlr();
+	//Instantiate
+	$my_travlr = new Travlr();
 
-  //Make a call
-  $travel_wrapper = $my_travlr->what_comes_around( 'Kalmar c' );
+	//Make a call
+	$travels = $my_travlr->get_arriving_trains( 'HumbugCity' );
 
   echo $travel_wrapper->get_error_message();
 

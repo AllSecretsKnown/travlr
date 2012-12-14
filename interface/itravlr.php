@@ -8,7 +8,7 @@ interface iTravlr{
 	 * @param string - Station name
 	 * @return - TrvaleWrapper object, Traversable
 	 */
-	public function what_comes_around($station);
+	public function get_arriving_trains($station);
 
 	/*
 	 * Function to get all departing trains from station X
@@ -16,6 +16,6 @@ interface iTravlr{
 	 * @param string - station name
 	 * @return - TrvaleWrapper object, Traversable
 	 */
-	public function what_goes_around($station);
+	public function get_departing_trains($station);
 
 }
