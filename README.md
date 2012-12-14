@@ -79,9 +79,9 @@ TravelWrapper objektet som returneras innehåller en samling med Travel objekt, 
 
 	public function get_date_and_time() {}
 
-  public function get_destination() {}
+	public function get_destination() {}
 
-  public function get_origin() {}
+	public function get_origin() {}
 
 ```
 
