@@ -154,4 +154,6 @@ Om Tågtider APIet inte svara returneras:
       array (size=0)
         empty
     private 'error' => string 'Could not connect to remote API' (length=31)
+
+    public function get_error_message() {}
 ```
