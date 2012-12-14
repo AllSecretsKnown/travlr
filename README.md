@@ -108,7 +108,7 @@ TravelWrapper objektet som returneras innehåller en samling med Travel objekt, 
 		2012-12-13 13:35:00 Kalmar c -> Linköping,Rimforsa,Kisa
 		2012-12-13 14:02:00 Kalmar c -> Köpenhamn,Malmö
 		2012-12-13 14:56:00 Kalmar c -> Köpenhamn,Malmö
-		2012-12-13 15:08:00 Kalmar c -> GÃ¶teborg,BorÃ¥s,VÃ¤xjÃ¶
+		2012-12-13 15:08:00 Kalmar c -> Göteborg,Borås,Växjö
 		2012-12-13 15:34:00 Kalmar c -> Linköping,Rimforsa,Kisa
 		2012-12-13 16:30:00 Kalmar c -> Köpenhamn,Malmö
 		2012-12-13 17:05:00 Kalmar c -> Köpenhamn,Malmö
@@ -126,7 +126,7 @@ TravelWrapper objektet som returneras innehåller en samling med Travel objekt, 
 
 ##Hur sker felhantering?
 
-Samtliga publika metoder returnerar ett Wrapper object med en error property returneras om ingen data finns att presentera, eller om den eftersökta stationen saknas.
+Samtliga publika metoder returnerar ett Wrapper object med en error property satt om ingen data finns att presentera, eller om den eftersökta stationen saknas.
 
 ```php
 
